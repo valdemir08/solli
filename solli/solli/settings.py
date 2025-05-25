@@ -40,10 +40,11 @@ INSTALLED_APPS = [
     
     'users',
     'donations',
-    'requests',
+    'solicitations',
     'campaigns',
     'proposals',
 ]
+AUTH_USER_MODEL = 'users.User'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
