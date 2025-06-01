@@ -3,22 +3,9 @@ from django.db import models
 
 # Create your models here.
 
-class Base(models.Model):
-    created_at = models.DateTimeField(auto_now_add=True)
-    edited_at = models.DateTimeField(auto_now_add=True)
-    is_active = models.BooleanField(default=True)
-
-    class Meta:
-        abstract = True
-
 class User(AbstractUser):
-    DOCUMENT_TYPES = [
-        ("CPF", "Pessoa Física"),
-        ("CNPJ", "Pessoa Jurídica")
-    ]
     full_name = models.CharField(max_length=255)
-    document = models.CharField(max_length=20, unique=True)
-    document_type = models.CharField(max_length=4, choices=DOCUMENT_TYPES)
+    cnpj = models.CharField(max_length=20, unique=True, blank=True, null=True)
     is_company = models.BooleanField(default=False)
 
     created_at = models.DateTimeField(auto_now_add=True)

@@ -5,10 +5,6 @@ from .models import User
 
 @admin.register(User)
 class UserAdmin(BaseUserAdmin):
-    # Campos adicionais que você tenha em User, por exemplo:
-    fieldsets = BaseUserAdmin.fieldsets + (
-        (None, {'fields': ('full_name', 'document', 'document_type', 'is_company')}),
-    )
-
-    # Também para mostrar na listagem
-    list_display = BaseUserAdmin.list_display + ('full_name', 'document', 'document_type', 'is_company')
+    list_display = ('username', 'email', 'full_name', 'is_company', 'cnpj', 'is_staff', 'is_active')
+    search_fields = ('username', 'email', 'full_name', 'cnpj')
+    ordering = ('username',)
