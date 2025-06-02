@@ -1,10 +1,27 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    <div class="flex items-center justify-center h-screen" style="height: calc(100vh - 44px);">
+        <div>
+            <h1 class="text-8xl pb-10 font-nunito font-bold text-teal-900">Bem-Vindo ao Solli</h1>
+            <h2 class="flex justify-center text-4xl pb-10 font-nunito font-bold text-teal-900">Conectando quem pode doar
+                a quem precisa</h2>
+            <div class="flex gap-10 justify-center pb-8">
+                <button class="border border-gray-300 w-1/5 px-4 py-3 text-2xl bg-blue-500 text-white font-semibold rounded-2xl hover:bg-blue-700 transition"
+                        type="button">Entrar
+                </button>
+                <button class="border border-gray-300 w-1/5 px-4 py-3 text-2xl bg-yellow-500 text-white font-semibold rounded-2xl hover:bg-yellow-700 transition"
+                        type="button" id="btn_create_acount" data-url="{% url 'users:register_user' %}">Criar conta
+                </button>
+
+            </div>
+            <div class="flex justify-center">
+                <button class=" border border-gray-300 w-1/3 px-4 py-3 text-2xl bg-emerald-100 text-teal-900 font-semibold rounded-2xl hover:bg-emerald-300 transition"
+                        type="button" onclick="window.location.href='{% url 'users:register_user'%}'">Conheça as doações
+                </button>
+            </div>
+        </div>
+    </div>
+
+<script src="{% static 'core/js/core_butons_href.js' %}"></script>
+{% endblock %}

@@ -8,7 +8,9 @@ def register_user(request):
         form = CustomUserForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('login')
+            return redirect('core:landing')
+        else:
+            print("ERROS:", form.errors.as_json())
     else:
         form = CustomUserForm()
     context = {'form': form}

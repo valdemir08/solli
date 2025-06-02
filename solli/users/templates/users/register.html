@@ -4,13 +4,30 @@
 <div class="flex" style="height: calc(100vh - 44px);">
 
   <div class="flex-1 flex items-center justify-center overflow-hidden">
+      <div class="p-20">
     <img src="{% static 'images/solli_logo.svg' %}" alt="logo" class="max-h-full max-w-full object-contain" />
+          </div>
   </div>
 
   <div class="flex-1 flex items-center justify-center overflow-hidden">
     <div class="w-full max-w-lg p-10 border border-gray-300 rounded-2xl">
-      <h1 class="text-3xl font-bold mb-6">Cadastre-se</h1>
-      <form method="post" class="space-y-4">
+
+        <div class="flex mb-6 w-full">
+            <button id="btn_pf"
+                    class="toggle-button selected flex-1 px-4 py-2 border border-gray-300 rounded-l-md text-center">
+                Para pessoas
+            </button>
+            <button id="btn_pj" class="toggle-button flex-1 px-4 py-2 border border-gray-300 rounded-r-md text-center">
+                Para empresas
+            </button>
+        </div>
+
+
+        <h1 class="text-3xl font-bold mb-2">Cadastre-se</h1>
+        <h2 class="text-1xl mb-6">Já possui uma conta? <a href="" class="text-emerald-600 hover:text-emerald-800 underline">Entrar</a></h2>
+
+
+      <form method="post" class="space-y-4" action="{% url 'users:register_user' %}">
         {% csrf_token %}
 
           <!-- labels e campos do form -->
@@ -29,7 +46,25 @@
                   Email
               </label>
               {{ form.email }}
+              <div class="text-red-600 font-semibold mt-1">
+              {{ form.email.errors }}
+              </div>
           </div>
+
+          <!-- identificação de empresa-->
+          <input type="hidden" name="is_company" id="id_is_company" value="false" />
+
+          <!-- cnpj -->
+          <div class="mb-4" id="cnpj_field" style="display:none;">
+              <label for="{{ form.cnpj.id_for_label }}" class="block mb-1 text-gray-700 font-semibold">
+                  CNPJ
+              </label>
+              {{ form.cnpj }}
+              <div class="text-red-600 font-semibold mt-1">
+              {{ form.cnpj.errors }}
+              </div>
+          </div>
+
 
           <!-- senha -->
           <div class="mb-4">
@@ -58,4 +93,7 @@
 
 
 </div>
+<script src="{% static 'js/toggle_btns_style.js' %}"></script>
+<script src="{% static 'js/toggle_cnpj.js' %}"></script>
+
 {% endblock %}

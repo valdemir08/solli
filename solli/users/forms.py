@@ -35,9 +35,15 @@ class CustomUserForm(UserCreationForm):
         required=False
     )
 
+    is_company = forms.BooleanField(
+        required=False,
+        label='É uma empresa?',
+        widget=forms.CheckboxInput(attrs={'class': 'mr-2'})
+    )
+
     class Meta:
         model = User
-        fields = ['full_name', 'email','cnpj','password1', 'password2']
+        fields = ['full_name', 'email','is_company' ,'cnpj','password1', 'password2']
 
         widgets = {
             'full_name': forms.TextInput(attrs=input_attrs),
@@ -45,14 +51,32 @@ class CustomUserForm(UserCreationForm):
 
         }
 
-    def clean_cnpj(self):
-        cnpj = self.cleaned_data.get('cnpj', '').strip()
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        print("Validando email:", email)
+        if User.objects.filter(email=email).exists():
+            raise ValidationError('Este email já está cadastrado.')
+        return email
 
-        # Se usuário marcou ser empresa (cnpj preenchido), valida o CNPJ
-        if cnpj:
+    def clean_cnpj(self):
+        cnpj = self.cleaned_data.get('cnpj')
+        is_company = self.cleaned_data.get('is_company')
+
+        if is_company:
+            if not cnpj:
+                raise ValidationError('CNPJ é obrigatório para empresas.')
             if not validate_cnpj(cnpj):
-                raise ValidationError("CNPJ inválido.")
+                raise ValidationError('CNPJ inválido.')
+            if User.objects.filter(cnpj=cnpj).exists():
+                raise ValidationError('Este CNPJ já está cadastrado.')
+        else:
+            cnpj = None
+
         return cnpj
+
+    def clean(self):
+        cleaned_data = super().clean()
+        return cleaned_data
 
     def save(self, commit=True):
         user = super().save(commit=False)
@@ -63,11 +87,13 @@ class CustomUserForm(UserCreationForm):
         # Define is_company como True se cnpj foi informado
         user.is_company = bool(self.cleaned_data.get('cnpj'))
 
+        cnpj = self.cleaned_data.get('cnpj')
+
         # Salva o cnpj só se for empresa
         if user.is_company:
-            user.cnpj = self.cleaned_data['cnpj']
+            user.cnpj = cnpj
         else:
-            user.cnpj = ''  # ou None, se preferir
+            user.cnpj = None
 
         if commit:
             user.save()
