@@ -2,29 +2,24 @@
 {% load static %}
 {% block content %}
 
-    <div class="flex flex-col h-[calc(100vh-44px)]">
-        <div class="flex flex-row bg-yellow-300 ">
-            <div class="flex-1 flex flex-col items-center bg-yellow-500 p-4">
+    <div>
+        <div class="flex flex-row ">
+            <div class="flex flex-col items-center p-4 w-1/2">
                 <div>
-                <h1 class="text-4xl m-0">O que você vai doar?</h1>
-                <h2 class="text-xl m-0 text-center">
-                    Inicie uma doação e aguarde alguém demonstrar interesse na sua ajuda
-                </h2>
-                    </div>
-            </div>
-            <div class="flex-1 flex flex-col items-center bg-yellow-700 p-4">
-                <h1 class="text-4xl m-0">O que você vai doar?</h1>
-                <h2 class="text-xl m-0 text-center">
-                    Inicie uma doação e aguarde alguém demonstrar interesse na sua ajuda
-                </h2>
+                    <h1 class="text-4xl m-0">O que você vai doar?</h1>
+                    <h2 class="text-xl m-0">
+                        Inicie uma doação e aguarde alguém demonstrar interesse na sua ajuda
+                    </h2>
+                </div>
             </div>
         </div>
 
         <form method="post" enctype="multipart/form-data" action="{% url 'users:register_user' %}"
-              class="flex flex-row w-full">
+              class="flex ">
             {% csrf_token %}
-            <div class="flex-1 flex justify-center overflow-hidden">
-                <div>
+            <!-- coluna esquerda -->
+            <div class="flex w-1/2 justify-center">
+                <div class="w-4/6 ">
 
                     <!-- titulo -->
                     <div class="mb-4">
@@ -79,9 +74,9 @@
             </div>
 
             <!-- coluna direita -->
-            <div class="flex-1 flex justify-center overflow-hidden">
+            <div class="flex w-1/2 justify-center">
                 <div>
-                    <div class="mb-4 mt-10">
+                    <div class="mb-4">
                         <label for="{{ image_form.image.id_for_label }}" class="block mb-1 text-gray-700 font-semibold">
                             Imagem
                         </label>
@@ -92,13 +87,18 @@
                     </div>
 
                     <!-- container do preview -->
-                    <div class="max-w-xs max-h-[400px] overflow-hidden rounded-2xl">
-                        <img id="imagePreview" class="max-w-full"/>
+                    <div class="max-w-xs max-h-[450px] overflow-hidden rounded-md">
+                        <h1 id="title_pvw" class="hidden">Pre-visualização</h1>
+                        <img id="image_preview" class="max-w-full"/>
+                        <span id="image_crop_tips" class="hidden block mt-2 ml-2 text-blue-500 cursor-help"
+                              title="Use o zoom para ajustar o recorte como quiser.">
+    ℹ️
+                        </span>
                     </div>
 
 
                     <button type="submit"
-                            class="w-full px-4 py-3 bg-emerald-600 text-white font-semibold rounded-full hover:bg-emerald-700 transition">
+                            class=" mt-10 w-full px-4 py-3 bg-emerald-600 text-white font-semibold rounded-full hover:bg-emerald-700 transition">
                         Concluir
                     </button>
                 </div>
@@ -111,6 +111,8 @@
 
 
     <script src="{% static 'js/cropper_image.js' %}"></script>
+
+
 
 
 {% endblock %}

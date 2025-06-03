@@ -5,6 +5,10 @@ from .forms import DonationForm
 from core.forms import LocationForm, ImageForm
 # Create your views here.
 
+
+def list_donations(request):
+    return render(request,'donations/list.html')
+
 def create_donation(request):
     if request.method == 'POST':
         donation_form = DonationForm(request.POST)
