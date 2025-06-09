@@ -31,5 +31,64 @@
   font-family: 'Nunito', sans-serif;
 }
 
+/* Container principal do Choices (dropdown) */
+.choices__inner {
+  background-color: white;
+  border: 1px solid #d1d5db; /* cinza claro, como border-gray-300 */
+  border-radius: 0.375rem;    /* rounded-md */
+  padding: 0.5rem 0.75rem;    /* py-2 px-3 */
+  min-height: 2.5rem;         /* altura padrão */
+  font-size: 1rem;            /* texto padrão */
+  color: #374151;             /* text-gray-700 */
+}
+
+/* Foco no campo (quando clicado) */
+.choices__inner:focus-within,
+.choices__inner.choices__inner--focus {
+  border-color: #3b82f6; /* azul 500 */
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+  outline: none;
+}
+
+/* Dropdown com opções */
+.choices__list--dropdown {
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  background-color: white;
+  margin-top: 0.25rem;
+  max-height: 15rem;
+  overflow-y: auto;
+  z-index: 10;
+}
+
+/* Cada opção da lista */
+.choices__item--choice {
+  padding: 0.5rem 0.75rem;
+  cursor: pointer;
+  color: #374151;
+  font-size: 1rem;
+}
+
+/* Hover da opção */
+.choices__item--choice.is-highlighted {
+  background-color: #e0e7ff; /* azul claro */
+  color: #1e40af; /* azul escuro */
+}
+
+/* Placeholder no campo */
+.choices__placeholder {
+  color: #9ca3af; /* text-gray-400 */
+}
+
+/* Botão de remover item */
+.choices__button {
+  color: #6b7280; /* cinza */
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+
+
 
 

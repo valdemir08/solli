@@ -32,13 +32,15 @@
 
           <!-- labels e campos do form -->
 
-          <!-- nome completo -->
+          <!-- nome completo
           <div class="mb-4">
               <label for="{{ form.full_name.id_for_label }}" class="block mb-1 text-gray-700 font-semibold">
                   Nome Completo
               </label>
               {{ form.full_name }}
           </div>
+-->
+          {% include 'includes/components/form_input.html' with for=form.full_name.id_for_label label="Nome Completo" form=form.full_name errors=form.full_name.errors%}
 
           <!-- email -->
           <div class="mb-4">

@@ -4,10 +4,11 @@
 {% include 'includes/head.html' %}
 
 <body>
-  {% include 'includes/nav_bar.html' %}
+{% include 'includes/nav_bar.html' %}
 
-  <main>
+<main>
     {% block content %}{% endblock %}
-  </main>
+    {% block scripts %}{% endblock %}
+</main>
 </body>
 </html>

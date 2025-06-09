@@ -14,7 +14,7 @@
             </div>
         </div>
 
-        <form method="post" enctype="multipart/form-data" action="{% url 'users:register_user' %}"
+        <form method="post" enctype="multipart/form-data" action="{% url 'donations:create_donation' %}"
               class="flex ">
             {% csrf_token %}
             <!-- coluna esquerda -->
@@ -42,6 +42,18 @@
                         {{ donation_form.description }}
                         <div class="text-red-600 font-semibold mt-1">
                             {{ donation_form.description.errors }}
+                        </div>
+                    </div>
+
+                    <!-- categoria -->
+                    <div class="mb-4">
+                        <label for="{{ donation_form.category.id_for_label }}"
+                               class="block mb-1 text-gray-700 font-semibold">
+                            Categoria
+                        </label>
+                        {{ donation_form.category }}
+                        <div class="text-red-600 font-semibold mt-1">
+                            {{ donation_form.category.errors }}
                         </div>
                     </div>
 
@@ -75,7 +87,7 @@
 
             <!-- coluna direita -->
             <div class="flex w-1/2 justify-center">
-                <div>
+                <div class="w-4/6">
                     <div class="mb-4">
                         <label for="{{ image_form.image.id_for_label }}" class="block mb-1 text-gray-700 font-semibold">
                             Imagem
@@ -87,13 +99,22 @@
                     </div>
 
                     <!-- container do preview -->
-                    <div class="max-w-xs max-h-[450px] overflow-hidden rounded-md">
-                        <h1 id="title_pvw" class="hidden">Pre-visualização</h1>
-                        <img id="image_preview" class="max-w-full"/>
-                        <span id="image_crop_tips" class="hidden block mt-2 ml-2 text-blue-500 cursor-help"
-                              title="Use o zoom para ajustar o recorte como quiser.">
-    ℹ️
-                        </span>
+
+                    <div class="max-w-xs mx-auto mb-4">
+                        <h2 id="title_pvw" class="text-gray-700 font-medium mb-3 text-center">
+                            Pré-visualização
+                        </h2>
+                        <div class="relative bg-gray-100 rounded-lg overflow-hidden shadow-sm h-60">
+                            <img
+                                    id="image_preview"
+                                    class="absolute top-1/2 left-1/2 w-full h-full object-contain -translate-x-1/2 -translate-y-1/2"
+                                    alt=" "
+                            />
+                        </div>
+                        <p id="image_crop_tips" class="text-sm text-blue-500 mt-2 text-center cursor-help"
+                           title="Use o mouse para dar zoom e a caixa de recorte para pegar a região de interesse">
+                            ℹ️ Dicas
+                        </p>
                     </div>
 
 
@@ -110,9 +131,14 @@
 
 
 
+
+
+
+
+
+{% endblock %}
+
+{% block scripts %}
     <script src="{% static 'js/cropper_image.js' %}"></script>
-
-
-
-
+    <script src="{% static 'js/location_dropdown.js' %}"></script>
 {% endblock %}
