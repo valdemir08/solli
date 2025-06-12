@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
+from django.contrib.auth import authenticate
 
 from .models import User
 from .utils import validate_cnpj
@@ -8,7 +9,7 @@ from .utils import validate_cnpj
 input_attrs = {'class': 'border border-gray-300 rounded px-3 py-2 w-full'}
 
 
-class CustomUserForm(UserCreationForm):
+class CustomUserCreationForm(UserCreationForm):
     # os campos password1 e password2 vêm do UserCreationForm.
     # não é possível estilizar esses campos via Meta.widgets,
     # então eles são redefinidos aqui para aplicar a estilização personalizada.
@@ -65,14 +66,17 @@ class CustomUserForm(UserCreationForm):
         if is_company:
             if not cnpj:
                 raise ValidationError('CNPJ é obrigatório para empresas.')
-            if not validate_cnpj(cnpj):
-                raise ValidationError('CNPJ inválido.')
-            if User.objects.filter(cnpj=cnpj).exists():
-                raise ValidationError('Este CNPJ já está cadastrado.')
-        else:
-            cnpj = None
+            cnpj_numbers = ''.join(filter(str.isdigit, cnpj))
 
-        return cnpj
+            if not validate_cnpj(cnpj_numbers):
+                raise ValidationError('CNPJ inválido.')
+
+            if User.objects.filter(cnpj=cnpj_numbers).exists():
+                raise ValidationError('Este CNPJ já está cadastrado.')
+
+            return cnpj_numbers
+        else:
+            return None
 
     def clean(self):
         cleaned_data = super().clean()
@@ -98,3 +102,35 @@ class CustomUserForm(UserCreationForm):
         if commit:
             user.save()
         return user
+
+
+class CustomUserLoginForm(forms.Form):
+    email = forms.EmailField(
+        label='Email',
+        widget=forms.EmailInput(attrs={
+            'class': 'border border-gray-300 rounded px-3 py-2 w-full',
+            'placeholder': 'Digite seu email'
+        })
+    )
+    password = forms.CharField(
+        label='Senha',
+        widget=forms.PasswordInput(attrs={
+            'class': 'border border-gray-300 rounded px-3 py-2 w-full',
+            'placeholder': 'Digite sua senha'
+        })
+    )
+
+    def clean(self):
+        cleaned_data = super().clean()
+        email = cleaned_data.get('email')
+        password = cleaned_data.get('password')
+
+        if email and password:
+            user = authenticate(username=email, password=password)
+            if user is None:
+                raise ValidationError("Email ou senha inválidos.")
+            if not user.is_active:
+                raise ValidationError("Essa conta está desativada.")
+            cleaned_data['user'] = user
+
+        return cleaned_data

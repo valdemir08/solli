@@ -7,6 +7,36 @@
 {% include 'includes/nav_bar.html' %}
 
 <main>
+    {% if messages %}
+        <div id="messages-container" class="fixed top-4 right-4 w-80 space-y-2 z-50">
+            {% for message in messages %}
+                <div class="flex items-center justify-between p-4 rounded shadow
+        {% if message.tags == 'error' %} bg-red-500 text-white
+        {% elif message.tags == 'success' %} bg-green-500 text-white
+        {% elif message.tags == 'warning' %} bg-yellow-400 text-black
+        {% else %} bg-gray-300 text-black
+        {% endif %}
+      ">
+                    <span>{{ message }}</span>
+                    <button onclick="this.parentElement.style.display='none';" aria-label="Fechar mensagem"
+                            class="ml-4 font-bold text-xl leading-none">&times;
+                    </button>
+                </div>
+            {% endfor %}
+        </div>
+
+        <script>
+            // Opcional: mensagem desaparece automaticamente depois de 5 segundos
+            setTimeout(() => {
+                const container = document.getElementById('messages-container');
+                if (container) {
+                    container.style.transition = "opacity 0.5s ease";
+                    container.style.opacity = '0';
+                    setTimeout(() => container.remove(), 500);
+                }
+            }, 5000);
+        </script>
+    {% endif %}
     {% block content %}{% endblock %}
     {% block scripts %}{% endblock %}
 </main>

@@ -6,15 +6,25 @@
         <div class="flex flex-row ">
             <div class="flex flex-col items-center p-4 w-1/2">
                 <div>
-                    <h1 class="text-4xl m-0">O que você vai doar?</h1>
-                    <h2 class="text-xl m-0">
-                        Inicie uma doação e aguarde alguém demonstrar interesse na sua ajuda
-                    </h2>
+
+                    {% if donation %}
+                        <h1 class="text-4xl m-0">Editar doação</h1>
+                        <h2 class="text-xl m-0">
+                            Altere e salve informações da doação
+                        </h2>
+                    {% else %}
+                        <h1 class="text-4xl m-0">O que você vai doar?</h1>
+                        <h2 class="text-xl m-0">
+                            Inicie uma doação e aguarde alguém demonstrar interesse na sua ajuda
+                        </h2>
+
+                    {% endif %}
                 </div>
             </div>
         </div>
 
-        <form method="post" enctype="multipart/form-data" action="{% url 'donations:create_donation' %}"
+        <form method="post" enctype="multipart/form-data" action="
+                {% if donation %}{% url 'donations:edit_donation' donation.id %}{% else %}{% url 'donations:create_donation' %}{% endif %}"
               class="flex ">
             {% csrf_token %}
             <!-- coluna esquerda -->
@@ -117,10 +127,15 @@
                         </p>
                     </div>
 
+                    <input type="hidden" name="x" id="crop_x">
+                    <input type="hidden" name="y" id="crop_y">
+                    <input type="hidden" name="width" id="crop_width">
+                    <input type="hidden" name="height" id="crop_height">
+
 
                     <button type="submit"
                             class=" mt-10 w-full px-4 py-3 bg-emerald-600 text-white font-semibold rounded-full hover:bg-emerald-700 transition">
-                        Concluir
+                        {% if donation %}Salvar Alterações{% else %}Concluir{% endif %}
                     </button>
                 </div>
             </div>
@@ -128,13 +143,6 @@
         </form>
 
     </div>
-
-
-
-
-
-
-
 
 {% endblock %}
 

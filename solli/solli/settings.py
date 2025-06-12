@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'solicitations',
     'campaigns',
     'proposals',
-    'core',
+    'core.apps.CoreConfig',
 ]
 AUTH_USER_MODEL = 'users.User'
 
@@ -133,3 +133,8 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGIN_URL = '/login/'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'

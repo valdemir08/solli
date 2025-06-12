@@ -3,7 +3,9 @@
         {{ label }}
     </label>
     {{ form }}
-    <div class="text-red-600 font-semibold mt-1">
-        {{ errors }}
-    </div>
+    {% if errors %}
+        <div class="text-red-600 font-semibold mt-1">
+            {{ errors }}
+        </div>
+    {% endif %}
 </div>

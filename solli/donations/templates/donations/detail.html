@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+    <div class="w-3/4 mx-auto p-6 bg-gray-50 rounded-lg shadow-md mt-6 flex flex-row max-h-full">
+        <div class="w-2/5 overflow-hidden flex-1 justify-center items-center">
+            <div class="flex text-3xl font-medium text-gray-800 mb-2 items-center justify-center">{{ donation.title }}</div>
+            <div class="pr-9 pl-9 pb-9">
+                {% if donation_image %}
+                    <img src="{{ donation_image }}" alt="Imagem da doação {{ donation.title }}"
+                         class="w-full h-full max-h-max object-cover rounded-2xl">
+                {% endif %}
+            </div>
+        </div>
+        <div class="w-3/5 overflow-hidden flex-1 p-10 flex flex-col">
+    <span class="w-1/5 inline-block px-4 py-1 bg-emerald-100 text-emerald-800 text-xl rounded-full mb-4">
+        {{ donation.category.name }}
+    </span>
+
+            <p class="text-gray-600 mb-4">
+                <i class="fas fa-map-marker-alt mr-2"></i>
+                {{ donation.location.city }} - {{ donation.location.estate }}
+            </p>
+
+            <p class="text-gray-700 mb-6 break-words">
+                {{ donation.description|default:"Sem descrição disponível." }}
+            </p>
+
+            <h1>Criado Por:</h1>
+            <h2>{{ donation.user.full_name }}</h2>
+            <div class="mt-auto">
+                <!-- parte dos botões-->
+                <div class="">
+                    {% if user == donation.user%}
+                        <div class="flex justify-center">
+                        <button class="px-12 py-3 bg-emerald-600 text-white font-semibold rounded-full hover:bg-emerald-700 transition"
+                                type="button" onclick="window.location.href='{% url 'donations:edit_donation' donation.id %}'">Editar
+                        </button>
+                    </div>
+                    {% else %}
+                        <div class="flex justify-center">
+                            <button class="px-8 py-3 bg-emerald-600 text-white font-semibold rounded-full hover:bg-emerald-700 transition"
+                                    type="button" onclick="window.location.href='{% url 'donations:create_donation' %}'">Tenho interesse
+                            </button>
+                        </div>
+                    {% endif %}
+
+
+                </div>
+                <a href="{% url 'donations:list_donations' %}" class="text-emerald-600 hover:underline ">
+                    ← Voltar para a lista de doações
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}

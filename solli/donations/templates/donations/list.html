@@ -13,47 +13,57 @@
     </div>
 
     <!-- Donations list -->
-    {% if donations %}
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {% for donation in donations %}
-                <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition duration-300 flex flex-col md:flex-row">
-                    <!-- Image (left side) -->
-                    {% if donation.image_set.all %}
-                        <div class="md:w-1/3">
-                            <img class="w-full h-full object-cover min-h-[200px]"
-                                 src="{{ donation.image_set.first.image.url }}"
-                                 alt="Imagem da doação {{ donation.title }}">
-                        </div>
-                    {% else %}
-                        <div class="md:w-1/3 bg-gray-200 flex items-center justify-center">
-                            <i class="fas fa-box-open text-4xl text-gray-400"></i>
-                        </div>
-                    {% endif %}
+    {% if donations_with_images %}
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pl-20 pr-20 pt-6">
+            {% for item in donations_with_images %}
+                <div class="max-h-40 bg-gray-50 rounded-lg shadow-md overflow-hidden hover:shadow-xl transition duration-300 flex flex-row"
+                     onclick="window.location.href='{% url 'donations:donation_detail' item.donation.id %}'">
 
-                    <!-- Content (right side) -->
-                    <div class="p-6 md:w-2/3 flex flex-col justify-between">
+                    <!-- imagem -->
+                    <div class="w-1/3 aspect-video md:aspect-auto max-h-48 md:max-h-full overflow-hidden">
+                        {% if item.image_url %}
+                            <img src="{{ item.image_url }}"
+                                 alt="Imagem da doação {{ item.donation.title }}"
+                                 class="w-full h-full object-cover"/>
+                        {% else %}
+                            <div class="w-full h-full bg-gray-200 flex items-center justify-center text-gray-500">
+                                Sem imagem
+                            </div>
+                        {% endif %}
+                    </div>
+
+
+                    <!-- conteúdo -->
+                    <div class="p-2 w-2/3 flex flex-col justify-between">
                         <div>
                             <div class="flex justify-between items-start mb-2">
-                                <h2 class="text-xl font-semibold text-gray-800">{{ donation.title }}</h2>
+                                <h2 class="text-xl font-semibold text-gray-800">{{ item.donation.title }}</h2>
                                 <span class="px-3 py-1 bg-emerald-100 text-emerald-800 text-sm rounded-full">
-                                    {{ donation.category.name }}
+                                    {{ item.donation.category.name }}
                                 </span>
                             </div>
 
-                            <div class="flex items-center text-gray-600 mb-3">
-                                <i class="fas fa-map-marker-alt mr-2"></i>
-                                <span>{{ donation.location.city }} - {{ donation.location.estate }}</span>
-                            </div>
 
-                            <p class="text-gray-700 mb-4">
-                                {{ donation.description|default:"Sem descrição" }}
+                            <p class="text-gray-700 mb-4 line-clamp-3">
+                                {{ item.donation.description|default:"Sem descrição" }}
                             </p>
-                        </div>
 
-                        <button onclick="window.location.href='{#% url 'donations:donation_detail' donation.id %#}'"
+                            <div class="flex justify-between items-start mb-2">
+                                <div class="flex items-center text-gray-600 mb-3">
+                                    <i class="fas fa-map-marker-alt mr-2"></i>
+                                    <span>{{ item.donation.location.city }} - {{ item.donation.location.estate }}</span>
+                                </div>
+                                <!--
+                                <button onclick="window.location.href='
+                                {#% url 'donations:donation_detail' item.donation.id %#}'"
                                 class="w-full md:w-auto py-2 px-6 bg-emerald-600 hover:bg-emerald-700 text-white rounded-md transition self-start">
                             Ver detalhes
                         </button>
+                        -->
+                            </div>
+                        </div>
+
+
                     </div>
                 </div>
             {% endfor %}
